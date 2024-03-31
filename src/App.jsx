@@ -1,25 +1,31 @@
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { twMerge } from "tailwind-merge";
 
 function App() {
   const [todos, setTodos] = useState(["eat", "code", "sleep"]); // [1, 2, 3
   const [value, setValue] = useState("");
-  const haha = Math.floor(new Date().valueOf() + Math.random());
-  console.log(`${haha}`);
+  const notify = (message, type) => toast[type](message);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!value) {
-      alert("Please enter a value");
+      notify("Nhập giá trị", "error");
       return;
     }
     setTodos([...todos, value]);
     setValue("");
-    alert("Form submitted");
+    notify("Thêm thành công", "success");
   };
+
   const handleDelete = (index) => {
     setTodos(todos.filter((_, i) => i !== index));
+    notify("Xóa thành công", "success");
   };
   return (
     <>
+      <ToastContainer stacked />
       <h1 className=" text-3xl font-bold underline">To Do App</h1>
       <form className="flex flex-col" onSubmit={handleSubmit}>
         <label htmlFor="id">Add to do:</label>
@@ -45,7 +51,13 @@ function App() {
       <div>
         <ul>
           {todos.map((todo, index) => (
-            <li key={index} className="flex justify-between">
+            <li
+              key={index}
+              className={twMerge(
+                "flex justify-between",
+                index % 2 === 0 && "bg-gray-300",
+              )}
+            >
               <span>{todo}</span>
               <button
                 onClick={() => handleDelete(index)}
