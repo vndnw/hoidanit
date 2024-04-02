@@ -10,9 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "bootstrap": "^5.3.3",
     "clsx": "^2.1.0",
     "react": "^18.2.0",
+    "react-bootstrap": "^2.10.2",
     "react-dom": "^18.2.0",
+    "react-pro-sidebar": "^1.1.0",
     "react-router-dom": "6.22.3",
     "react-toastify": "^10.0.5",
     "tailwind-merge": "^2.2.2"
@@ -29,7 +32,6 @@
     "postcss": "^8.4.38",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.13",
-    "tailwindcss": "^3.4.3",
     "vite": "^5.2.0"
   }
 }
