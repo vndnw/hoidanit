@@ -2,11 +2,12 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import { NavLink } from "react-router-dom";
 
 const Header = () => {
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
-      <Container fluid>
+      <Container fluid="lg">
         <Navbar.Brand href="#">Hỏi Dân IT Fake</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
@@ -15,9 +16,15 @@ const Header = () => {
             style={{ maxHeight: "100px" }}
             navbarScroll
           >
-            <Nav.Link href="#Home">Home</Nav.Link>
-            <Nav.Link href="#User">User</Nav.Link>
-            <Nav.Link href="#Admin">Admin</Nav.Link>
+            <NavLink className="nav-link" to="/">
+              Home
+            </NavLink>
+            <NavLink className="nav-link" to="/user">
+              User
+            </NavLink>
+            <NavLink className="nav-link" to="/admin">
+              Admin
+            </NavLink>
           </Nav>
           <Nav
             className="ms-auto my-2 my-lg-0"
