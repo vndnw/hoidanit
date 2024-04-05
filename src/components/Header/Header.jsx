@@ -1,14 +1,17 @@
 import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
-import { NavLink } from "react-router-dom";
+import { Navbar, Nav, NavDropdown } from "react-bootstrap";
+import { Link, NavLink } from "react-router-dom";
+
+import "./Header.scss";
+import { Button } from "react-bootstrap";
 
 const Header = () => {
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
-      <Container fluid="lg">
-        <Navbar.Brand href="#">Hỏi Dân IT Fake</Navbar.Brand>
+      <Container fluid="">
+        <Link className="navbar-brand" to="/">
+          Hỏi Dân IT Fake
+        </Link>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
@@ -27,18 +30,22 @@ const Header = () => {
             </NavLink>
           </Nav>
           <Nav
-            className="ms-auto my-2 my-lg-0"
+            className="ms-auto my-2 my-lg-0 gap-2"
             style={{ maxHeight: "100px" }}
             navbarScroll
           >
-            <NavDropdown title="Settings" id="navbarScrollingDropdown">
+            <Button className="border border-dark" variant="light">
+              Log in
+            </Button>
+            <Button variant="dark">Sign up</Button>
+            {/* <NavDropdown title="Settings" id="navbarScrollingDropdown">
               <NavDropdown.Item href="#action4">Profile</NavDropdown.Item>
               <NavDropdown.Item href="#action5">
                 Another action
               </NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href="#action5">Logout</NavDropdown.Item>
-            </NavDropdown>
+            </NavDropdown>NavDropdown */}
           </Nav>
         </Navbar.Collapse>
       </Container>
