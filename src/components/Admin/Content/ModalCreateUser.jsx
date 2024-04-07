@@ -6,6 +6,8 @@ import Modal from "react-bootstrap/Modal";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import axios from "axios";
 import "./FileUpload.scss";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function ModalCreateUser() {
   const [show, setShow] = useState(false);
@@ -18,10 +20,7 @@ function ModalCreateUser() {
     avatar: "",
   });
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
-  const handleAddUser = async () => {
+  const handleClose = () => {
     setUser({
       username: "",
       password: "",
@@ -29,6 +28,24 @@ function ModalCreateUser() {
       role: "user",
       avatar: "",
     });
+    setPreviewSource(null);
+    setShow(false);
+  };
+  const handleShow = () => setShow(true);
+
+  const handleAddUser = async () => {
+    const { username, password, email, role, avatar } = user;
+    if (!username || !password || !email || !role || !avatar) {
+      toast.error("Please fill all fields");
+      return;
+    }
+
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (!emailPattern.test(email)) {
+      toast.error("Invalid email");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("username", user.username);
     formData.append("password", user.password);
@@ -43,13 +60,18 @@ function ModalCreateUser() {
       //   file: document.querySelector("#fileInput").files[0],
       // })
       .then((response) => {
-        console.log(response);
+        if (response.data.EC) {
+          toast.error(response.data.EM);
+          return;
+        }
+        toast.success(response.data.EM);
+        handleClose();
       })
       .catch((error) => {
+        toast.error("Failed to add user");
         console.log(error);
+        handleClose();
       });
-    setShow(false);
-    setPreviewSource(null);
   };
 
   const [previewSource, setPreviewSource] = useState();
@@ -205,6 +227,7 @@ function ModalCreateUser() {
           </Button>
         </Modal.Footer>
       </Modal>
+      <ToastContainer />
     </>
   );
 }
