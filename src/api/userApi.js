@@ -26,4 +26,9 @@ const postCreateUser = (data) => {
     const url = '/api/v1/participant';
     return axiosClient.post(url, data);
 }
-export { postCreateUser };
+const getAllUser = () => {
+    const url = '/api/v1/participant/all';
+    return axiosClient.get(url);
+}
+
+export { postCreateUser, getAllUser };
