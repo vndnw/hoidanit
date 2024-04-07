@@ -4,10 +4,10 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import { FaCloudUploadAlt } from "react-icons/fa";
-import axios from "axios";
 import "./FileUpload.scss";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { postCreateUser } from "../../../api/userApi";
 
 function ModalCreateUser() {
   const [show, setShow] = useState(false);
@@ -46,32 +46,44 @@ function ModalCreateUser() {
       return;
     }
 
-    const formData = new FormData();
-    formData.append("username", user.username);
-    formData.append("password", user.password);
-    formData.append("email", user.email);
-    formData.append("role", user.role);
-    formData.append("userImage", user.avatar);
+    try {
+      const formData = new FormData();
+      formData.append("username", user.username);
+      formData.append("password", user.password);
+      formData.append("email", user.email);
+      formData.append("role", user.role);
+      formData.append("userImage", user.avatar);
 
-    await axios
-      .post("http://localhost:8081/api/v1/participant", formData)
-      // await axios.postForm("https://httpbin.org/post", {
-      //   myVar: "foo",
-      //   file: document.querySelector("#fileInput").files[0],
-      // })
-      .then((response) => {
-        if (response.data.EC) {
-          toast.error(response.data.EM);
-          return;
-        }
-        toast.success(response.data.EM);
-        handleClose();
-      })
-      .catch((error) => {
-        toast.error("Failed to add user");
-        console.log(error);
-        handleClose();
-      });
+      const response = await postCreateUser(formData);
+      if (response.EC) {
+        toast.error(response.EM);
+        return;
+      }
+      toast.success(response.EM);
+      handleClose();
+    } catch (error) {
+      toast.error("Failed to add user");
+      console.log(error);
+      handleClose();
+    }
+    //   await axios
+    //     .post("http://localhost:8081/api/v1/participant", formData)
+    //     // await axios.postForm("https://httpbin.org/post", {
+    //     //   myVar: "foo",
+    //     //   file: document.querySelector("#fileInput").files[0],
+    //     // })
+    //     .then((response) => {
+    //       if (response.data.EC) {
+    //         toast.error(response.data.EM);
+    //         return;
+    //       }
+    //
+    //     })
+    //     .catch((error) => {
+    //       toast.error("Failed to add user");
+    //       console.log(error);
+    //       handleClose();
+    //     });
   };
 
   const [previewSource, setPreviewSource] = useState();
