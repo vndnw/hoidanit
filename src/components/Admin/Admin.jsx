@@ -1,16 +1,17 @@
 import AdminSidebar from "./AdminSidebar";
-
+import "./Admin.scss";
+import { Outlet } from "react-router-dom";
 const Admin = () => {
   return (
     <div className="d-flex vh-100">
       <div>
         <AdminSidebar />
       </div>
-      <div>
-        Admin Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque
-        minima unde iusto libero sed veritatis nulla, quaerat quae aperiam ipsam
-        error perferendis, atque amet voluptatibus maxime porro et excepturi
-        illum?
+      <div style={{ width: "100%" }}>
+        <header className="admin-header">Admin header</header>
+        <div>
+          <Outlet />
+        </div>
       </div>
     </div>
   );

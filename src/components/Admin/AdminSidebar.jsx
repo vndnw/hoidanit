@@ -3,6 +3,7 @@ import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import { GrDashboard, GrUserAdmin } from "react-icons/gr";
 import { MdOutlineFeaturedPlayList, MdOutlineQuiz } from "react-icons/md";
 import { AiOutlineQuestionCircle, AiOutlineUser } from "react-icons/ai";
+import { Link } from "react-router-dom";
 const AdminSidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
   return (
@@ -14,17 +15,23 @@ const AdminSidebar = () => {
       <Menu>
         <MenuItem
           onClick={() => setCollapsed(!collapsed)}
-          icon={<GrUserAdmin size={2} />}
+          icon={<GrUserAdmin />}
         >
           Admin
         </MenuItem>
-        <MenuItem icon={<GrDashboard />}> Dashboard </MenuItem>
+        <MenuItem icon={<GrDashboard />} component={<Link to="/admin" />}>
+          Dashboard
+        </MenuItem>
         <SubMenu icon={<MdOutlineFeaturedPlayList />} label="Features">
-          <MenuItem icon={<AiOutlineUser />}> Quản lý User </MenuItem>
+          <MenuItem
+            icon={<AiOutlineUser />}
+            component={<Link to="/admin/manage-user" />}
+          >
+            Quản lý User
+          </MenuItem>
           <MenuItem icon={<MdOutlineQuiz />}> Quản lý bài Quiz </MenuItem>
           <MenuItem icon={<AiOutlineQuestionCircle />}>
-            {" "}
-            Quản lý câu hỏi{" "}
+            Quản lý câu hỏi
           </MenuItem>
         </SubMenu>
       </Menu>
