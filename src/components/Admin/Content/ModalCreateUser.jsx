@@ -62,8 +62,8 @@ function ModalCreateUser() {
       toast.success(response.EM);
       handleClose();
     } catch (error) {
-      toast.error("Failed to add user");
       console.log(error);
+      toast.error(error.EM);
       handleClose();
     }
     //   await axios
