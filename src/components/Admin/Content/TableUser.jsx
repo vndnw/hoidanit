@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 import { getAllUser } from "../../../api/userApi";
+import ModalUpdateUser from "./ModalUpdateUser";
 
-const TableUser = ({ update }) => {
+const TableUser = ({ update, onUpdate }) => {
   const [listUser, setListUser] = useState([]);
   useEffect(() => {
     const getListUser = async () => {
@@ -41,7 +42,9 @@ const TableUser = ({ update }) => {
               <td>{user.role}</td>
               <td>
                 <button className="btn btn-secondary">view</button>
-                <button className="btn btn-warning mx-3">edit</button>
+                <div className="btn mx-3">
+                  <ModalUpdateUser onUpdate={onUpdate} userUpdate={user} />
+                </div>
                 <button className="btn btn-danger">delete</button>
               </td>
             </tr>

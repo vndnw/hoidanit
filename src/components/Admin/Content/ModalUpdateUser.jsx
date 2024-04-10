@@ -6,53 +6,41 @@ import Modal from "react-bootstrap/Modal";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import "./FileUpload.scss";
 import { toast } from "react-toastify";
-import { postCreateUser } from "../../../api/userApi";
+import "react-toastify/dist/ReactToastify.css";
+import { putUpdateUser } from "../../../api/userApi";
 
-function ModalCreateUser({ onUpdate }) {
+function ModalUpdateUser({ userUpdate, onUpdate }) {
   const [show, setShow] = useState(false);
 
   const [user, setUser] = useState({
-    username: "",
-    password: "",
-    email: "",
-    role: "user",
-    userImage: "",
+    ...userUpdate,
   });
 
+  const [previewSource, setPreviewSource] = useState(
+    user.image ? `data:image/jpeg;base64,${user.image}` : null
+  );
+
   const handleClose = () => {
-    setUser({
-      username: "",
-      password: "",
-      email: "",
-      role: "user",
-      userImage: "",
-    });
-    setPreviewSource(null);
+    // setUser({
+    //   username: "",
+    //   password: "",
+    //   email: "",
+    //   role: "user",
+    //   userImage: "",
+    // });
+    // setPreviewSource(null);
     setShow(false);
   };
   const handleShow = () => setShow(true);
 
   const handleAddUser = async () => {
-    const { username, password, email, role, userImage } = user;
-    if (!username || !password || !email || !role || !userImage) {
-      toast.error("Please fill all fields");
-      return;
-    }
-
-    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    if (!emailPattern.test(email)) {
-      toast.error("Invalid email");
-      return;
-    }
-
     try {
       const formData = new FormData();
+      formData.append("id", user.id);
       formData.append("username", user.username);
-      formData.append("password", user.password);
-      formData.append("email", user.email);
       formData.append("role", user.role);
       formData.append("userImage", user.userImage);
-      const response = await postCreateUser(formData);
+      const response = await putUpdateUser(formData);
       if (response.EC) {
         toast.error(response.EM);
         return;
@@ -66,8 +54,6 @@ function ModalCreateUser({ onUpdate }) {
     }
     onUpdate();
   };
-
-  const [previewSource, setPreviewSource] = useState();
 
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
@@ -109,13 +95,13 @@ function ModalCreateUser({ onUpdate }) {
   };
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
-        Add new user
+      <Button variant="warning" onClick={handleShow}>
+        edit
       </Button>
 
       <Modal size="xl" show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Add new user</Modal.Title>
+          <Modal.Title>Edit a user</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
@@ -135,6 +121,7 @@ function ModalCreateUser({ onUpdate }) {
               <Form.Group as={Col} controlId="formGridPassword">
                 <Form.Label>Password</Form.Label>
                 <Form.Control
+                  disabled
                   type="password"
                   placeholder="Password"
                   value={user.password}
@@ -149,6 +136,7 @@ function ModalCreateUser({ onUpdate }) {
               <Form.Group as={Col} controlId="formGridEmail">
                 <Form.Label>Email</Form.Label>
                 <Form.Control
+                  disabled
                   placeholder="user@gmail.com"
                   type="email"
                   value={user.email}
@@ -223,4 +211,4 @@ function ModalCreateUser({ onUpdate }) {
   );
 }
 
-export default ModalCreateUser;
+export default ModalUpdateUser;

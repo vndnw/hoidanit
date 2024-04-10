@@ -26,9 +26,13 @@ const postCreateUser = (data) => {
     const url = '/api/v1/participant';
     return axiosClient.postForm(url, data);
 }
+const putUpdateUser = (data) => {
+    const url = '/api/v1/participant';
+    return axiosClient.putForm(url, data);
+}
 const getAllUser = () => {
     const url = '/api/v1/participant/all';
     return axiosClient.get(url);
 }
 
-export { postCreateUser, getAllUser };
+export { postCreateUser, getAllUser, putUpdateUser };
