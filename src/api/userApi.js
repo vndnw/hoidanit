@@ -24,7 +24,7 @@ const UserApi = {
 };
 const postCreateUser = (data) => {
     const url = '/api/v1/participant';
-    return axiosClient.post(url, data);
+    return axiosClient.postForm(url, data);
 }
 const getAllUser = () => {
     const url = '/api/v1/participant/all';

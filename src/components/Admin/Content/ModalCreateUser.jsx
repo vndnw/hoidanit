@@ -9,7 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { postCreateUser } from "../../../api/userApi";
 
-function ModalCreateUser() {
+function ModalCreateUser({ onUpdate }) {
   const [show, setShow] = useState(false);
 
   const [user, setUser] = useState({
@@ -17,7 +17,7 @@ function ModalCreateUser() {
     password: "",
     email: "",
     role: "user",
-    avatar: "",
+    userImage: "",
   });
 
   const handleClose = () => {
@@ -26,7 +26,7 @@ function ModalCreateUser() {
       password: "",
       email: "",
       role: "user",
-      avatar: "",
+      userImage: "",
     });
     setPreviewSource(null);
     setShow(false);
@@ -34,8 +34,8 @@ function ModalCreateUser() {
   const handleShow = () => setShow(true);
 
   const handleAddUser = async () => {
-    const { username, password, email, role, avatar } = user;
-    if (!username || !password || !email || !role || !avatar) {
+    const { username, password, email, role, userImage } = user;
+    if (!username || !password || !email || !role || !userImage) {
       toast.error("Please fill all fields");
       return;
     }
@@ -52,8 +52,7 @@ function ModalCreateUser() {
       formData.append("password", user.password);
       formData.append("email", user.email);
       formData.append("role", user.role);
-      formData.append("userImage", user.avatar);
-
+      formData.append("userImage", user.userImage);
       const response = await postCreateUser(formData);
       if (response.EC) {
         toast.error(response.EM);
@@ -66,24 +65,7 @@ function ModalCreateUser() {
       toast.error(error.EM);
       handleClose();
     }
-    //   await axios
-    //     .post("http://localhost:8081/api/v1/participant", formData)
-    //     // await axios.postForm("https://httpbin.org/post", {
-    //     //   myVar: "foo",
-    //     //   file: document.querySelector("#fileInput").files[0],
-    //     // })
-    //     .then((response) => {
-    //       if (response.data.EC) {
-    //         toast.error(response.data.EM);
-    //         return;
-    //       }
-    //
-    //     })
-    //     .catch((error) => {
-    //       toast.error("Failed to add user");
-    //       console.log(error);
-    //       handleClose();
-    //     });
+    onUpdate();
   };
 
   const [previewSource, setPreviewSource] = useState();
@@ -93,7 +75,7 @@ function ModalCreateUser() {
     previewFile(file);
     setUser({
       ...user,
-      avatar: file,
+      userImage: file,
     });
   };
 
@@ -104,7 +86,7 @@ function ModalCreateUser() {
       previewFile(file);
       setUser({
         ...user,
-        avatar: file,
+        userImage: file,
       });
     }
   };
@@ -116,7 +98,7 @@ function ModalCreateUser() {
       previewFile(file);
       setUser({
         ...user,
-        avatar: file,
+        userImage: file,
       });
     }
   };
@@ -178,7 +160,6 @@ function ModalCreateUser() {
               <Form.Group as={Col} controlId="formGridRole">
                 <Form.Label>Role</Form.Label>
                 <Form.Select
-                  defaultValue="user"
                   value={user.role}
                   onChange={(e) => setUser({ ...user, role: e.target.value })}
                 >
@@ -193,7 +174,7 @@ function ModalCreateUser() {
                 onDrop={handleDrop}
                 style={{ display: "block" }}
               >
-                <Form.Label>Upload Avatar</Form.Label>
+                <Form.Label>Upload userImage</Form.Label>
                 <Form.Control
                   type="file"
                   onChange={handleFileInputChange}

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 import { getAllUser } from "../../../api/userApi";
 
-const TableUser = () => {
+const TableUser = ({ update }) => {
   const [listUser, setListUser] = useState([]);
   useEffect(() => {
     const getListUser = async () => {
@@ -11,15 +11,15 @@ const TableUser = () => {
         console.log("Fetch user list successfully: ", response);
         setListUser(response.DT);
         // sort by id
-        setListUser((listUser) => {
-          return listUser.sort((a, b) => a.id - b.id);
-        });
+        // setListUser((listUser) => {
+        //   return listUser.sort((a, b) => a.id - b.id);
+        // });
       } catch (error) {
         console.log("Failed to fetch user list: ", error);
       }
     };
     getListUser();
-  }, [listUser]);
+  }, [update]);
   return (
     <>
       <Table striped bordered hover>
