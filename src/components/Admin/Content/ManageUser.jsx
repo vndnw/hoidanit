@@ -7,6 +7,7 @@ const ManageUser = () => {
   const handleUpdate = () => {
     setUpdate((prevState) => !prevState);
   };
+  const test = 50;
   return (
     <div className="manage-user">
       <h3 className="manage-user__title">Manage User</h3>
