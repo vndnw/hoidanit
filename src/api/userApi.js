@@ -30,9 +30,25 @@ const putUpdateUser = (data) => {
     const url = '/api/v1/participant';
     return axiosClient.putForm(url, data);
 }
+const deleteUser = (id) => {
+    const url = '/api/v1/participant';
+    return axiosClient.delete(url, { 
+        data: {
+            id: id
+        } 
+    });
+}
 const getAllUser = () => {
     const url = '/api/v1/participant/all';
     return axiosClient.get(url);
 }
 
-export { postCreateUser, getAllUser, putUpdateUser };
+const getUserWithPage = (page, limit) => {
+    const url = '/api/v1/participant';
+    return axiosClient.get(url, {params: {
+        page,
+        limit,
+    }});
+}
+
+export { postCreateUser, getAllUser, getUserWithPage, putUpdateUser, deleteUser };

@@ -4,6 +4,7 @@ import "./ManageUser.scss";
 import TableUser from "./TableUser";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import TableUserPaginate from "./TableUserPaginate";
 
 const ManageUser = () => {
   const [update, setUpdate] = useState(false);
@@ -19,7 +20,8 @@ const ManageUser = () => {
             <ModalCreateUser onUpdate={handleUpdate} />
           </div>
           <div className="manage-user__table">
-            <TableUser onUpdate={handleUpdate} update={update} />
+            {/* <TableUser onUpdate={handleUpdate} update={update} /> */}
+            <TableUserPaginate onUpdate={handleUpdate} update={update} />
           </div>
         </div>
       </div>

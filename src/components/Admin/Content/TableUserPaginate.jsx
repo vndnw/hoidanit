@@ -1,28 +1,32 @@
 import { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
-import { getAllUser } from "../../../api/userApi";
+import { getUserWithPage } from "../../../api/userApi";
 import ModalUpdateUser from "./ModalUpdateUser";
 import ModalViewUser from "./ModalViewUser";
 import ModalDeleteUser from "./ModalDeleteUser";
+import ReactPaginate from "react-paginate";
 
-const TableUser = ({ update, onUpdate }) => {
+const LIMIT_USER = 5;
+const TableUserPaginate = ({ update, onUpdate }) => {
   const [listUser, setListUser] = useState([]);
+  const [pageCount, setPageCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   useEffect(() => {
     const getListUser = async () => {
       try {
-        const response = await getAllUser();
+        const response = await getUserWithPage(currentPage, LIMIT_USER);
         console.log("Fetch user list successfully: ", response);
-        setListUser(response.DT);
-        // sort by id
-        // setListUser((listUser) => {
-        //   return listUser.sort((a, b) => a.id - b.id);
-        // });
+        setListUser(response.DT.users);
+        setPageCount(response.DT.totalPages);
       } catch (error) {
         console.log("Failed to fetch user list: ", error);
       }
     };
     getListUser();
-  }, [update]);
+  }, [update, currentPage]);
+  const handlePageClick = (event) => {
+    setCurrentPage(event.selected + 1);
+  };
   return (
     <>
       <Table striped bordered hover>
@@ -59,8 +63,28 @@ const TableUser = ({ update, onUpdate }) => {
           ))}
         </tbody>
       </Table>
+      <ReactPaginate
+        nextLabel="next >"
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={3}
+        marginPagesDisplayed={2}
+        pageCount={pageCount}
+        previousLabel="< previous"
+        pageClassName="page-item"
+        pageLinkClassName="page-link"
+        previousClassName="page-item"
+        previousLinkClassName="page-link"
+        nextClassName="page-item"
+        nextLinkClassName="page-link"
+        breakLabel="..."
+        breakClassName="page-item"
+        breakLinkClassName="page-link"
+        containerClassName="pagination justify-content-center"
+        activeClassName="active"
+        renderOnZeroPageCount={null}
+      />
     </>
   );
 };
 
-export default TableUser;
+export default TableUserPaginate;

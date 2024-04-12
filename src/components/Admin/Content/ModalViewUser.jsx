@@ -5,11 +5,9 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import "./FileUpload.scss";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { putUpdateUser } from "../../../api/userApi";
 
-function ModalUpdateUser({ userUpdate, onUpdate }) {
+function ModalViewUser({ userUpdate, onUpdate }) {
   const [show, setShow] = useState(false);
 
   const [user, setUser] = useState({
@@ -17,7 +15,7 @@ function ModalUpdateUser({ userUpdate, onUpdate }) {
   });
 
   const [previewSource, setPreviewSource] = useState(
-    user.image ? `data:image/jpeg;base64,${user.image}` : null
+    userUpdate.image ? `data:image/jpeg;base64,${userUpdate.image}` : null
   );
 
   const handleClose = () => {
@@ -25,79 +23,15 @@ function ModalUpdateUser({ userUpdate, onUpdate }) {
   };
   const handleShow = () => setShow(true);
 
-  const handleAddUser = async () => {
-    try {
-      if (JSON.stringify(user) === JSON.stringify(userUpdate)) {
-        toast.error("Nothing change");
-        return;
-      }
-      const formData = new FormData();
-      formData.append("id", user.id);
-      formData.append("username", user.username);
-      formData.append("role", user.role);
-      formData.append("userImage", user.userImage);
-      const response = await putUpdateUser(formData);
-      if (response.EC) {
-        toast.error(response.EM);
-        return;
-      }
-      toast.success(response.EM);
-      onUpdate();
-      handleClose();
-    } catch (error) {
-      console.log(error);
-      toast.error(error.EM);
-      handleClose();
-    }
-  };
-
-  const handleFileInputChange = (e) => {
-    const file = e.target.files[0];
-    previewFile(file);
-    setUser({
-      ...user,
-      userImage: file,
-    });
-  };
-
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    if (e.dataTransfer.items && e.dataTransfer.items[0]) {
-      const file = e.dataTransfer.items[0].getAsFile();
-      previewFile(file);
-      setUser({
-        ...user,
-        userImage: file,
-      });
-    }
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    if (e.dataTransfer.items && e.dataTransfer.items[0]) {
-      const file = e.dataTransfer.items[0].getAsFile();
-      previewFile(file);
-      setUser({
-        ...user,
-        userImage: file,
-      });
-    }
-  };
-
-  const previewFile = (file) => {
-    if (!file) return;
-    const src = URL.createObjectURL(file);
-    setPreviewSource(src);
-  };
   return (
     <>
-      <Button variant="warning" onClick={handleShow}>
-        edit
+      <Button variant="secondary" onClick={handleShow}>
+        view
       </Button>
 
       <Modal size="xl" show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit a user</Modal.Title>
+          <Modal.Title>View a user</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
@@ -105,12 +39,10 @@ function ModalUpdateUser({ userUpdate, onUpdate }) {
               <Form.Group as={Col} controlId="formGridUsername">
                 <Form.Label>Username</Form.Label>
                 <Form.Control
+                  disabled
                   type="text"
                   placeholder="Enter username"
                   value={user.username}
-                  onChange={(e) =>
-                    setUser({ ...user, username: e.target.value })
-                  }
                 />
               </Form.Group>
 
@@ -121,9 +53,6 @@ function ModalUpdateUser({ userUpdate, onUpdate }) {
                   type="password"
                   placeholder="Password"
                   value={user.password}
-                  onChange={(e) =>
-                    setUser({ ...user, password: e.target.value })
-                  }
                 />
               </Form.Group>
             </Row>
@@ -136,31 +65,23 @@ function ModalUpdateUser({ userUpdate, onUpdate }) {
                   placeholder="user@gmail.com"
                   type="email"
                   value={user.email}
-                  onChange={(e) => setUser({ ...user, email: e.target.value })}
                 />
               </Form.Group>
 
               <Form.Group as={Col} controlId="formGridRole">
                 <Form.Label>Role</Form.Label>
-                <Form.Select
-                  value={user.role}
-                  onChange={(e) => setUser({ ...user, role: e.target.value })}
-                >
+                <Form.Select disabled value={user.role}>
                   <option value="user">User</option>
                   <option value="admin">Admin</option>
                 </Form.Select>
               </Form.Group>
             </Row>
             <Form.Group controlId="formGridFile" className="mb-3">
-              <Form.Label
-                onDragOver={handleDragOver}
-                onDrop={handleDrop}
-                style={{ display: "block" }}
-              >
+              <Form.Label style={{ display: "block" }}>
                 <Form.Label>Upload Image</Form.Label>
                 <Form.Control
+                  disabled
                   type="file"
-                  onChange={handleFileInputChange}
                   className="form-control"
                   hidden
                   accept="image/*"
@@ -198,13 +119,10 @@ function ModalUpdateUser({ userUpdate, onUpdate }) {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleAddUser}>
-            Save Changes
-          </Button>
         </Modal.Footer>
       </Modal>
     </>
   );
 }
 
-export default ModalUpdateUser;
+export default ModalViewUser;
