@@ -50,5 +50,12 @@ const getUserWithPage = (page, limit) => {
         limit,
     }});
 }
+const postLogin = (email, password) => {
+    const url = '/api/v1/login';
+    return axiosClient.post(url, {
+        email,
+        password,
+    });
+}
 
-export { postCreateUser, getAllUser, getUserWithPage, putUpdateUser, deleteUser };
+export { postCreateUser, getAllUser, getUserWithPage, putUpdateUser, deleteUser, postLogin };

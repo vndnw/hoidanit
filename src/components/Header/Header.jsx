@@ -1,11 +1,18 @@
 import Container from "react-bootstrap/Container";
 import { Navbar, Nav, NavDropdown } from "react-bootstrap";
-import { Link, NavLink } from "react-router-dom";
-
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import "./Header.scss";
 import { Button } from "react-bootstrap";
 
 const Header = () => {
+  const navigate = useNavigate();
+  const handleLogin = () => {
+    navigate("/login");
+  };
+  const handleSignup = () => {
+    navigate("/signup");
+  };
+
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container fluid="">
@@ -34,7 +41,11 @@ const Header = () => {
             style={{ maxHeight: "100px" }}
             navbarScroll
           >
-            <Button className="border border-dark" variant="light">
+            <Button
+              onClick={handleLogin}
+              className="border border-dark"
+              variant="light"
+            >
               Log in
             </Button>
             <Button variant="dark">Sign up</Button>
