@@ -2,16 +2,18 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import "./Login.scss";
-import { postLogin } from "../../api/userApi";
+import { postRegister } from "../../api/userApi";
 import { toast } from "react-toastify";
 const Login = () => {
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!email || !password) {
+    if (!email || !username || !password) {
       return toast.error("Please fill all fields");
     }
     const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -20,10 +22,10 @@ const Login = () => {
       return;
     }
     try {
-      const response = await postLogin(email, password);
+      const response = await postRegister(email, username, password);
       if (response.EC === 0) {
         toast.success(response.EM);
-        return navigate("/");
+        return navigate("/login");
       }
       toast.error(response.EM);
     } catch (error) {
@@ -34,14 +36,13 @@ const Login = () => {
     <>
       <div className="auth-container">
         <div className="auth-header mt-2">
-          <span className="me-2">Don&apos;t have an account yet?</span>
-
+          <span className="me-2">Already have an account?</span>
           <Button
-            onClick={() => navigate("/signup")}
+            onClick={() => navigate("/login")}
             className="me-5"
             variant="outline-dark"
           >
-            Sign up
+            Login
           </Button>
         </div>
         <div className="container">
@@ -56,6 +57,16 @@ const Login = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   className="form-control mt-1"
                   placeholder="bruce@wayne.com"
+                  type="email"
+                />
+              </div>
+              <div className="form-group my-3">
+                <label>Username</label>
+                <input
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="form-control mt-1"
+                  placeholder="bruce"
                 />
               </div>
               <div className="form-group my-3">
@@ -63,23 +74,30 @@ const Login = () => {
                 <input
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   className="form-control mt-1"
                   placeholder="At least 8 characters"
                 />
               </div>
-              <p className=" text-right mt-2">
-                <Link className="forgot-password" to="/forgot-password">
-                  Forgot password?
-                </Link>
-              </p>
+              <div className="form-group my-3 ">
+                <input
+                  onClick={() => setShowPassword(!showPassword)}
+                  checked={showPassword}
+                  className="me-1"
+                  type="checkbox"
+                  name="show"
+                  id=""
+                />
+                <label>Show password</label>
+              </div>
+
               <div className="d-grid gap-2 mt-3">
                 <button
                   type="submit"
                   onClick={handleSubmit}
                   className="btn btn-dark"
                 >
-                  Login in to HoiDanIt
+                  Signup in to HoiDanIt
                 </button>
               </div>
               <div className="my-2 go-home ">
