@@ -82,13 +82,19 @@ const Login = () => {
               <div className="form-group my-3 ">
                 <input
                   onClick={() => setShowPassword(!showPassword)}
+                  style={{ cursor: "pointer" }}
                   checked={showPassword}
                   className="me-1"
                   type="checkbox"
                   name="show"
                   id=""
                 />
-                <label>Show password</label>
+                <label
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{ cursor: "pointer" }}
+                >
+                  Show password
+                </label>
               </div>
 
               <div className="d-grid gap-2 mt-3">

@@ -3,8 +3,11 @@ import { Navbar, Nav, NavDropdown } from "react-bootstrap";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import "./Header.scss";
 import { Button } from "react-bootstrap";
+import { useSelector } from "react-redux";
 
 const Header = () => {
+  const { account, isAuth } = useSelector((state) => state.user);
+  console.log(account, isAuth);
   const navigate = useNavigate();
   const handleLogin = () => {
     navigate("/login");
@@ -41,22 +44,29 @@ const Header = () => {
             style={{ maxHeight: "100px" }}
             navbarScroll
           >
-            <Button
-              onClick={handleLogin}
-              className="border border-dark"
-              variant="light"
-            >
-              Log in
-            </Button>
-            <Button variant="dark">Sign up</Button>
-            {/* <NavDropdown title="Settings" id="navbarScrollingDropdown">
-              <NavDropdown.Item href="#action4">Profile</NavDropdown.Item>
-              <NavDropdown.Item href="#action5">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action5">Logout</NavDropdown.Item>
-            </NavDropdown>NavDropdown */}
+            {isAuth ? (
+              <NavDropdown title="Settings" id="navbarScrollingDropdown">
+                <NavDropdown.Item href="#action4">Profile</NavDropdown.Item>
+                <NavDropdown.Item href="#action5">
+                  Another action
+                </NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item href="#action5">Logout</NavDropdown.Item>
+              </NavDropdown>
+            ) : (
+              <>
+                <Button
+                  onClick={handleLogin}
+                  className="border border-dark"
+                  variant="light"
+                >
+                  Log in
+                </Button>
+                <Button onClick={handleSignup} variant="dark">
+                  Sign up
+                </Button>
+              </>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>

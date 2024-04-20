@@ -4,10 +4,13 @@ import { Button } from "react-bootstrap";
 import "./Login.scss";
 import { postLogin } from "../../api/userApi";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { fetchData } from "./loginSlice";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,6 +25,8 @@ const Login = () => {
     try {
       const response = await postLogin(email, password);
       if (response.EC === 0) {
+        // dispatch({ type: "LOGIN", payload: response.DT });
+        dispatch(fetchData(response.DT));
         toast.success(response.EM);
         return navigate("/");
       }
