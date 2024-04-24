@@ -28,7 +28,11 @@ function ListQuiz() {
                 <Card.Body>
                   <Card.Title>Quiz {quiz.id}</Card.Title>
                   <Card.Text>{quiz.description}</Card.Text>
-                  <Link className="btn btn-primary" to={`/quiz/${quiz.id}`}>
+                  <Link
+                    className="btn btn-primary"
+                    to={`/quiz/${quiz.id}`}
+                    state={{ title: quiz?.description }}
+                  >
                     Start now
                   </Link>
                 </Card.Body>
