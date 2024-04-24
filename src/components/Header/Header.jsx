@@ -4,16 +4,24 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import "./Header.scss";
 import { Button } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import { postLogout } from "../../api/userApi";
 
 const Header = () => {
   const { account, isAuth } = useSelector((state) => state.user);
-  console.log(account, isAuth);
   const navigate = useNavigate();
   const handleLogin = () => {
     navigate("/login");
   };
   const handleSignup = () => {
     navigate("/signup");
+  };
+
+  const handleLogout = () => {
+    const logout = async () => {
+      const res = await postLogout(account.email, account.refreshToken);
+      console.log(res);
+    };
+    logout();
   };
 
   return (
@@ -51,7 +59,9 @@ const Header = () => {
                   Another action
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item href="#action5">Logout</NavDropdown.Item>
+                <NavDropdown.Item onClick={handleLogout}>
+                  Logout
+                </NavDropdown.Item>
               </NavDropdown>
             ) : (
               <>

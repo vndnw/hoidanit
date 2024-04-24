@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 const Home = () => {
   const { account, isAuth } = useSelector((state) => state.user);
-  console.log(account, isAuth);
+  // console.log(account, isAuth);
   return (
     <div className="container">
       <div className="d-flex flex-row justify-content-center align-items-center">

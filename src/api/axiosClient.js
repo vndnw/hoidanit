@@ -1,29 +1,42 @@
 // api/axiosClient.js
-import axios from 'axios';
+import axios from "axios";
+import NProgress from "nprogress";
+import { store } from "../redux/store";
 // import queryString from 'query-string';
 // Set up default config for http requests here
 // Please have a look at here `https://github.com/axios/axios#requestconfig` for the full list of configs
+
 const axiosClient = axios.create({
- baseURL: import.meta.env.VITE_API_URL,
- headers: {
- 'content-type': 'application/json',
- },
- // paramsSerializer: params => queryString.stringify(params),
+  baseURL: import.meta.env.VITE_API_URL,
+  headers: {
+    "content-type": "application/json",
+  },
+  // paramsSerializer: params => queryString.stringify(params),
 });
 axiosClient.interceptors.request.use(async (config) => {
- // Handle token here ... 
- return config;
-})
-axiosClient.interceptors.response.use((response) => {
- if (response && response.data) {
-    return response.data;
- }
- return response;
-}, (error) => {
- // Handle errors
- if(error.response && error.response.data) {
-    throw error.response.data;
-}  
- throw error;
+  // Handle token here ...
+  const token = store.getState()?.user?.account?.accessToken;
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  NProgress.start();
+
+  return config;
 });
+axiosClient.interceptors.response.use(
+  (response) => {
+    NProgress.done();
+    if (response && response.data) {
+      return response.data;
+    }
+    return response;
+  },
+  (error) => {
+    // Handle errors
+    if (error.response && error.response.data) {
+      throw error.response.data;
+    }
+    throw error;
+  }
+);
 export default axiosClient;

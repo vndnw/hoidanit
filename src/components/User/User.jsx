@@ -1,11 +1,11 @@
+import { Container } from "react-bootstrap";
+import ListQuiz from "./ListQuiz";
+
 const User = () => {
   return (
-    <div>
-      User Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum eaque
-      accusantium fuga similique perferendis a, eius laudantium, perspiciatis
-      aliquid repellendus nostrum laborum quo quia iure fugit non porro
-      aspernatur animi!
-    </div>
+    <Container>
+      <ListQuiz />
+    </Container>
   );
 };
 

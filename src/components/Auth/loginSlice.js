@@ -5,6 +5,7 @@ const initialState = {
     accessToken: null,
     refreshToken: null,
     user: null,
+    email: null,
     image: null,
     role: null,
   },
@@ -32,6 +33,7 @@ export const userSlice = createSlice({
       state.account.accessToken = action.payload.access_token;
       state.account.refreshToken = action.payload.refresh_token;
       state.account.user = action.payload.username;
+      state.account.email = action.payload.email;
       state.account.role = action.payload.role;
       state.account.image = action.payload.image;
       state.isAuth = true;

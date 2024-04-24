@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { fetchData } from "./loginSlice";
 const Login = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -22,16 +23,20 @@ const Login = () => {
       toast.error("Invalid email");
       return;
     }
+
     try {
+      setIsLoading(true);
       const response = await postLogin(email, password);
       if (response.EC === 0) {
-        // dispatch({ type: "LOGIN", payload: response.DT });
         dispatch(fetchData(response.DT));
         toast.success(response.EM);
+
         return navigate("/");
       }
+      setIsLoading(false);
       toast.error(response.EM);
     } catch (error) {
+      setIsLoading(false);
       console.log("Failed to login", error);
     }
   };
@@ -83,8 +88,16 @@ const Login = () => {
                   type="submit"
                   onClick={handleSubmit}
                   className="btn btn-dark"
+                  disabled={isLoading}
                 >
-                  Login in to HoiDanIt
+                  {isLoading && (
+                    <span
+                      className="spinner-border spinner-border-sm me-2"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                  )}
+                  <span>Login in to HoiDanIt</span>
                 </button>
               </div>
               <div className="my-2 go-home ">
