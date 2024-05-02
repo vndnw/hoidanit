@@ -4,9 +4,11 @@ import { getQuestionById } from "../../api/userApi";
 import DetailQuestion from "./DetailQuestion";
 const DetailQuiz = () => {
   const { id } = useParams();
-  const [quiz, setQuiz] = useState([]);
   const { state } = useLocation();
   const [index, setIndex] = useState(0);
+
+  const [quiz, setQuiz] = useState([]);
+  const [answerQuiz, setAnswerQuiz] = useState([]);
 
   const [disablePrev, setDisablePrev] = useState(true);
   const [disableNext, setDisableNext] = useState(false);
@@ -39,7 +41,6 @@ const DetailQuiz = () => {
             question: cur.description,
             image: cur.image,
             answers: [cur.answers],
-            isSelected: false,
           });
         } else {
           acc[index].answers.push(cur.answers);
@@ -49,8 +50,14 @@ const DetailQuiz = () => {
       setQuiz(groupBy);
     };
     fetchQuiz();
-  }, [id]);
-  console.log(quiz);
+  }, []);
+  const handleSubmit = () => {
+    const payload = {
+      quizId: +id,
+      answers: answerQuiz,
+    };
+    console.log(payload);
+  };
   return (
     <div className="container-xxl d-flex ">
       <main style={{ border: "red solid", width: "70%" }}>
@@ -59,7 +66,13 @@ const DetailQuiz = () => {
           {state?.title}
         </h2>
 
-        {quiz && quiz.length !== 0 && <DetailQuestion quiz={quiz[index]} />}
+        {quiz && quiz.length !== 0 && (
+          <DetailQuestion
+            answerQuiz={answerQuiz}
+            setAnswerQuiz={setAnswerQuiz}
+            quiz={quiz[index]}
+          />
+        )}
         <nav className="d-flex justify-content-center align-items-center gap-2">
           <button
             className="btn btn-dark"
@@ -76,6 +89,11 @@ const DetailQuiz = () => {
             Next
           </button>
         </nav>
+        <div className="d-flex justify-content-end">
+          <button onClick={handleSubmit} className="btn btn-primary">
+            Submit
+          </button>
+        </div>
       </main>
       <aside style={{ border: "green solid" }}>
         Bên này đếm ngược, bảng các câu hỏi
