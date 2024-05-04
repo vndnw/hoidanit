@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { getQuestionById } from "../../api/userApi";
+import { getQuestionById, postSubmitAnswer } from "../../api/userApi";
 import DetailQuestion from "./DetailQuestion";
+import ModalResult from "./ModalResult";
 const DetailQuiz = () => {
   const { id } = useParams();
   const { state } = useLocation();
@@ -12,6 +13,9 @@ const DetailQuiz = () => {
 
   const [disablePrev, setDisablePrev] = useState(true);
   const [disableNext, setDisableNext] = useState(false);
+
+  const [show, setShow] = useState(false);
+  const [result, setResult] = useState({});
 
   useEffect(() => {
     setDisablePrev(index <= 0);
@@ -51,54 +55,62 @@ const DetailQuiz = () => {
     };
     fetchQuiz();
   }, []);
-  const handleSubmit = () => {
-    const payload = {
+  const handleSubmit = async () => {
+    const data = {
       quizId: +id,
       answers: answerQuiz,
     };
-    console.log(payload);
+    const res = await postSubmitAnswer(data);
+    if (res.EC === 0) {
+      setResult(res.DT);
+      setShow(true);
+    } else alert(res.EM);
   };
-  return (
-    <div className="container-xxl d-flex ">
-      <main style={{ border: "red solid", width: "70%" }}>
-        <h2>
-          <strong>Quiz {id}: </strong>
-          {state?.title}
-        </h2>
 
-        {quiz && quiz.length !== 0 && (
-          <DetailQuestion
-            answerQuiz={answerQuiz}
-            setAnswerQuiz={setAnswerQuiz}
-            quiz={quiz[index]}
-          />
-        )}
-        <nav className="d-flex justify-content-center align-items-center gap-2">
-          <button
-            className="btn btn-dark"
-            disabled={disablePrev}
-            onClick={handleReduceQuestion}
-          >
-            Previous
-          </button>
-          <button
-            className="btn btn-dark"
-            disabled={disableNext}
-            onClick={handleIncreaseQuestion}
-          >
-            Next
-          </button>
-        </nav>
-        <div className="d-flex justify-content-end">
-          <button onClick={handleSubmit} className="btn btn-primary">
-            Submit
-          </button>
-        </div>
-      </main>
-      <aside style={{ border: "green solid" }}>
-        Bên này đếm ngược, bảng các câu hỏi
-      </aside>
-    </div>
+  return (
+    <>
+      <div className="container-xxl d-flex ">
+        <main style={{ border: "red solid", width: "70%" }}>
+          <h2>
+            <strong>Quiz {id}: </strong>
+            {state?.title}
+          </h2>
+
+          {quiz && quiz.length !== 0 && (
+            <DetailQuestion
+              answerQuiz={answerQuiz}
+              setAnswerQuiz={setAnswerQuiz}
+              quiz={quiz[index]}
+            />
+          )}
+          <nav className="d-flex justify-content-center align-items-center gap-2">
+            <button
+              className="btn btn-dark"
+              disabled={disablePrev}
+              onClick={handleReduceQuestion}
+            >
+              Previous
+            </button>
+            <button
+              className="btn btn-dark"
+              disabled={disableNext}
+              onClick={handleIncreaseQuestion}
+            >
+              Next
+            </button>
+          </nav>
+          <div className="d-flex justify-content-end">
+            <button onClick={handleSubmit} className="btn btn-primary">
+              Submit
+            </button>
+          </div>
+        </main>
+        <aside style={{ border: "green solid" }}>
+          Bên này đếm ngược, bảng các câu hỏi
+        </aside>
+      </div>
+      <ModalResult show={show} setShow={setShow} result={result} />
+    </>
   );
 };
 

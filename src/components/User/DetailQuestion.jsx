@@ -42,7 +42,7 @@ const DetailQuestion = ({ quiz, answerQuiz, setAnswerQuiz }) => {
                     answerQuiz.some(
                       (obj) =>
                         obj.questionId === quiz.id &&
-                        obj.answerId.includes(answer.id)
+                        obj.userAnswerId.includes(answer.id)
                     )
                   }
                   onChange={(e) => {
@@ -53,15 +53,15 @@ const DetailQuestion = ({ quiz, answerQuiz, setAnswerQuiz }) => {
                       );
 
                       if (questionIndex !== -1) {
-                        // If the object exists, create a new object with the new answer added to the existing answerId array
+                        // If the object exists, create a new object with the new answer added to the existing userAnswerId array
                         const newQuestionObject = {
                           ...prevAnswers[questionIndex],
-                          answerId: e.target.checked
+                          userAnswerId: e.target.checked
                             ? [
-                                ...prevAnswers[questionIndex].answerId,
+                                ...prevAnswers[questionIndex].userAnswerId,
                                 answer.id,
                               ]
-                            : prevAnswers[questionIndex].answerId.filter(
+                            : prevAnswers[questionIndex].userAnswerId.filter(
                                 (id) => id !== answer.id
                               ),
                         };
@@ -76,7 +76,7 @@ const DetailQuestion = ({ quiz, answerQuiz, setAnswerQuiz }) => {
                         // If the object doesn't exist and the checkbox is checked, create a new one
                         const newAnswer = {
                           questionId: quiz.id,
-                          answerId: [answer.id],
+                          userAnswerId: [answer.id],
                         };
                         return [...prevAnswers, newAnswer];
                       } else {

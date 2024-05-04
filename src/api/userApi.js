@@ -86,6 +86,10 @@ const getQuestionById = (id) => {
     },
   });
 };
+const postSubmitAnswer = (quiz) => {
+  const url = "/api/v1/quiz-submit";
+  return axiosClient.post(url, quiz);
+};
 
 export {
   UserApi,
@@ -99,4 +103,5 @@ export {
   postLogout,
   getQuizByUser,
   getQuestionById,
+  postSubmitAnswer,
 };
