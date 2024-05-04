@@ -13,17 +13,17 @@ function ModalResult({ show, setShow, result }) {
     <>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Confirm delete the user</Modal.Title>
+          <Modal.Title>Kết quả bài kiểm tra</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <h3>Tổng câu hỏi: {result.countTotal}</h3>
-          Điểm: {result.countCorrect}
+          <div>Tổng câu hỏi: {result.countTotal}</div>
+          <div>Điểm: {result.countCorrect}</div>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            No
+            Đóng
           </Button>
-          <Button variant="primary">Yes</Button>
+          <Button variant="primary">Xem chi tiết</Button>
         </Modal.Footer>
       </Modal>
     </>
